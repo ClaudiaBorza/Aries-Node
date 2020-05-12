@@ -21,11 +21,12 @@ function createProduct(req, res, next) {
 }
 
 function getProducts(req, res, next) {
-    Product.find((error, result) => {
+    Product.find((error, productsResult) => {
         if (error) {
             console.log('error', error)
         }
-        return res.json({data: result});
+        req.resorces.products = productsResult;
+        next();
     })
 }
 
@@ -34,6 +35,7 @@ function deleteAllProducts(req, res, next) {
         if (error) {
             return {message: 'Can not delete all products'}
         }
+
         return res.json({message: 'Successful delete all products'})
     })
 }
@@ -54,7 +56,7 @@ function deleteProductById(req, res, next) {
 function getProductsWithUser(req, res, next) {
     Product
         .find()
-        .populate('user','name email')
+        .populate('user', 'name email')
         .exec((err, result) => {
             if (err) {
                 return next(err)

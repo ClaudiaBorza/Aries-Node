@@ -14,7 +14,8 @@ function initExpress(app) {
     app.use(methodOverride());
 
     app.use(function (req, res, next) {       // app middleware
-        // middleware  general pt ca nu are ruta , daca are ruta e middleware specific care intra doar pt ruta respectiva
+                                              // middleware  general pt ca nu are ruta , daca are ruta e middleware specific care intra doar pt ruta respectiva
+        req.resorces = req.resorces || {};
         console.log('Date helper:' + dateHelper.formattedDate())
         next();
     })

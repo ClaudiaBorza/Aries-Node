@@ -1,6 +1,7 @@
 'use strict'
 
 const User = require('../models/users')
+const Product = require('../models/products')
 
 /*module exports*/
 
@@ -10,6 +11,7 @@ module.exports.getUserById = getUserById;
 module.exports.createUsers = createUsers;
 module.exports.updateUsers = updateUsers;
 module.exports.deleteUsers = deleteUsers;
+module.exports.getReports = getReports;
 
 
 function firstMidForGetFromUsers(req, res, next) {  //routes
@@ -22,9 +24,32 @@ function getUsers(req, res, next) {  //routes
         if (error) {
             console.log('error', error)
         }
-        return res.json({data: result});
+        req.resorces.users = result;
+        next();
+        //  res.json({data: result});
     })
 }
+
+function getReports(req, res, next) {  //routes
+    console.log('getReports', req)
+    User.find((error, resultUsers) => {
+        if (error) {
+            console.log('error', error)
+        }
+        Product.find()
+            .exec((err, resultProducts) => {
+                if (err) {
+                    return next(err)
+                }
+                req.resorces.users = resultUsers;
+                req.resorces.products = resultProducts;
+                next();
+            })
+    })
+
+
+}
+
 
 function getUserById(req, res, next) {  //routes
     const usersId = req.params.id;
@@ -79,3 +104,6 @@ function deleteUsers(req, res, next) {
     })
 
 }
+
+
+
